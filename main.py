@@ -1,5 +1,5 @@
 from banco import criar_tabela, salvar_cidade, listar_cidades
-from local import buscar_lugar
+from local import buscar_local
 from clima import buscar_previsao, descrever_clima
 
 def mostrar_previsao(cidade):
@@ -43,7 +43,7 @@ def main():
         if opcao == "1":
             nome = input("Digite a cidade: ")
 
-            local = buscar_lugar(nome)
+            local = buscar_local(nome)
 
             if local is None:
                 print("Cidade não encontrada.")

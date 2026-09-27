@@ -18,6 +18,16 @@ def criar_tabela():
             UNIQUE(nome, latitude, longitude)
         )
     """)
+
+def salvar_cidade(nome, latitude, longitude, pais):
+    conexao = conectar()
+
+    conexao.execute("""
+        INSERT OR IGNORE INTO cidades
+        (nome, latitude, longitude, pais)
+        VALUES (?, ?, ?, ?)
+    """, (nome, latitude, longitude, pais))
+    
     conexao.commit()
     conexao.close()
 

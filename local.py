@@ -17,7 +17,7 @@ def buscar_local(nome_cidade):
     )
     response.raise_for_status()
 
-    dados = response.jason()
+    dados = response.json()
 
     if "results" not in dados:
         return None
