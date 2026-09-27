@@ -27,7 +27,7 @@ def salvar_cidade(nome, latitude, longitude, pais):
         (nome, latitude, longitude, pais)
         VALUES (?, ?, ?, ?)
     """, (nome, latitude, longitude, pais))
-    
+
     conexao.commit()
     conexao.close()
 
@@ -45,3 +45,62 @@ def listar_cidades():
     conexao.close()
 
     return cidades
+
+def remover_cidade():
+    conexao = conectar()
+
+    cursor = conexao.execute("""
+        SELECT id, nome, latitude, longitude, pais
+        FROM cidades
+        ORDER BY nome
+    """)
+
+    cidades = cursor.fetchall()
+
+    if not cidades:
+        print("Nenhuma cidade salva.")
+        conexao.close()
+        return
+
+    print("\n--- CIDADES FAVORITAS ---")
+
+    for cidade in cidades:
+        print(f"{cidade[0]} - {cidade[1]}, {cidade[4]}")
+
+    try:
+        id_cidade = int(input("Digite o ID da cidade que deseja remover: "))
+    except ValueError:
+        print("Digite um número válido.")
+        conexao.close()
+        return
+
+    cidade_existe = False
+
+    for cidade in cidades:
+        if cidade[0] == id_cidade:
+            cidade_existe = True
+            break
+
+    if not cidade_existe:
+        print("Cidade não encontrada.")
+        conexao.close()
+        return
+
+    confirmacao = input(
+        f"Tem certeza que deseja remover {cidade[1]}? [s/n]: "
+    ).lower()
+
+    if confirmacao != "s":
+        print("Remoção cancelada.")
+        conexao.close()
+        return
+
+    conexao.execute(
+        "DELETE FROM cidades WHERE id = ?",
+        (id_cidade,)
+    )
+
+    conexao.commit()
+    conexao.close()
+
+    print("Cidade removida com sucesso.")

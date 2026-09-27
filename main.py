@@ -1,5 +1,5 @@
-from banco import criar_tabela, salvar_cidade, listar_cidades
-from local import buscar_local
+from banco import criar_tabela, salvar_cidade, listar_cidades, remover_cidade
+from local import buscar_local 
 from clima import buscar_previsao, descrever_clima
 
 def mostrar_previsao(cidade):
@@ -36,6 +36,7 @@ def main():
         print("1 - Salvar cidade favorita")
         print("2 - Listar cidades favoritas")
         print("3 - Ver previsão")
+        print("4 - Remover cidade dos favoritos")
         print("0 - Sair")
 
         opcao = input("Escolha uma opção: ")
@@ -94,6 +95,9 @@ def main():
                 print("Cidade não encontrada.")
             else:
                 mostrar_previsao(cidade_escolhida)
+
+        elif opcao == "4":
+            remover_cidade()
 
         elif opcao == "0":
             print("Programa encerrado.")
