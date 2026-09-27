@@ -1,0 +1,23 @@
+# Ambiente virtual
+.venv/
+venv/
+env/
+
+# Variáveis de ambiente e segredos
+.env
+
+# Cache e arquivos gerados pelo Python
+__pycache__/
+*.py[cod]
+
+# Banco de dados local
+clima.db
+*.db
+
+# Logs
+
+*.log
+
+# Arquivos do editor
+.vscode/
+.idea/
