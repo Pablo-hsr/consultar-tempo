@@ -111,6 +111,7 @@ python main.py
 1 - Salvar cidade favorita
 2 - Listar cidades favoritas
 3 - Ver previsão
+4 - Remover cidade
 0 - Sair
 ```
 
