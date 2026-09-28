@@ -7,12 +7,23 @@ def buscar_previsao(latitude, longitude):
     parametros_clima = {
         "latitude": latitude,
         "longitude": longitude,
-        "daily": (
-            "weather_code,"
+        "current": (
             "temperature_2m_max,"
             "temperature_2m_min,"
             "precipitation_probability_max,"
-            "precipitation_sum"
+            "precipitation_sum,"
+            "uv_index_max,"
+            "wind_speed_10m_max,"
+            "weather_code"
+        ),
+        "daily": (
+            "temperature_2m_max,"
+            "temperature_2m_min,"
+            "precipitation_probability_max,"
+            "precipitation_sum,"
+            "uv_index_max,"
+            "wind_speed_10m_max,"
+            "weather_code"
         ),
         "forecast_days": 2,
         "timezone": "auto"
@@ -48,3 +59,64 @@ def descrever_clima(codigo):
     }
 
     return descricoes.get(codigo, "Condição desconhecida")
+
+def gerar_recomendacao(dados):
+    diario = dados["daily"]
+
+    temperatura_maxima = diario["temperature_2m_max"][0]
+    temperatura_minima = diario["temperature_2m_min"][0]
+    chance_chuva = diario["precipitation_probability_max"][0]
+    uv = diario["uv_index_max"][0]
+    vento = diario["wind_speed_10m_max"][0]
+    codigo_clima = diario["weather_code"][0]
+
+    recomendacao = []
+
+    if chance_chuva >= 60:
+        recomendacao.append(
+            "Leve um guarda-chuva, pois há grande chance de chuva."
+        )
+    elif chance_chuva >= 30:
+        recomendacao.append(
+            "Existe alguma chance de chuva. Talvez seja interessante levar um guarda-chuva."
+        )
+    if temperatura_maxima >= 32:
+        recomendacao.append(
+            "Está muito quente. Leve água e evite ficar muito tempo no sol."
+        )
+    elif temperatura_maxima >= 28:
+        recomendacao.append(
+            "Está quente. Leve água se for ficar muito tempo fora."
+        )
+
+    if temperatura_minima <= 15:
+        recomendacao.append(
+            "A manhã ou a noite pode estar fria. Considere levar um casaco."
+        )
+
+    
+    if uv >= 8:
+        recomendacao.append(
+            "O índice UV está alto. Use protetor solar."
+        )
+    elif uv >= 6:
+        recomendacao.append(
+            "O índice UV está moderado/alto. Considere usar protetor solar."
+        )
+
+    if vento >= 40:
+        recomendacao.append(
+            "O vento está forte. Tenha cuidado em áreas abertas."
+        )
+
+    if codigo_clima in [95, 96, 99]:
+        recomendacao.append(
+            "Há previsão de tempestade. Talvez seja melhor evitar sair."
+        )
+
+    if not recomendacao:
+        recomendacao.append(
+            "O clima parece tranquilo para sair."
+        )
+
+    return recomendacao
