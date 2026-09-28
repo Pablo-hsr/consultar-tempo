@@ -8,12 +8,9 @@ def buscar_previsao(latitude, longitude):
         "latitude": latitude,
         "longitude": longitude,
         "current": (
-            "temperature_2m_max,"
-            "temperature_2m_min,"
-            "precipitation_probability_max,"
-            "precipitation_sum,"
-            "uv_index_max,"
-            "wind_speed_10m_max,"
+            "temperature_2m,"
+            "relative_humidity_2m,"
+            "wind_speed_10m,"
             "weather_code"
         ),
         "daily": (
@@ -120,3 +117,26 @@ def gerar_recomendacao(dados):
         )
 
     return recomendacao
+
+def recomendacao_de_sair(dados, nome_cidade):
+    diario = dados["daily"]
+
+    temperatura_minima = diario["temperature_2m_min"][0]
+    temperatura_maxima = diario["temperature_2m_max"][0]
+    chance_chuva = diario["precipitation_probability_max"][0]
+    uv = diario["uv_index_max"][0]
+    vento = diario["wind_speed_10m_max"][0]
+
+    print(f"\n--- RECOMENDACOES AO SAIR — {nome_cidade} ---")
+    print(f"Mínima: {temperatura_minima} °C")
+    print(f"Máxima: {temperatura_maxima} °C")
+    print(f"Chance de chuva: {chance_chuva}%")
+    print(f"Índice UV: {uv}")
+    print(f"Vento máximo: {vento} km/h")
+
+    print("\nRecomendações:")
+
+    recomendacoes = gerar_recomendacao(dados)
+
+    for recomendacao in recomendacoes:
+        print(f"- {recomendacao}")

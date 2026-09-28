@@ -6,15 +6,22 @@ Projeto desenvolvido em Python para estudar consumo de APIs, organização de c�
 
 ## Sobre o projeto
 
+O Clima App é uma aplicação executada no terminal que consulta a previsão do tempo para cidades favoritas.
+
 O programa permite:
 
 - buscar uma cidade pela API de geocodificação da Open-Meteo;
 - obter latitude e longitude da cidade;
 - consultar a previsão do tempo;
 - mostrar as condições de hoje e amanhã;
+- exibir temperatura mínima e máxima;
+- mostrar chance de chuva;
+- exibir índice UV e velocidade do vento;
+- gerar recomendações no modo “Recomendacao ao sair?”;
 - salvar cidades favoritas em um banco SQLite;
 - listar cidades salvas;
-- consultar a previsão de uma cidade favorita.
+- consultar a previsão de uma cidade favorita;
+- remover cidades favoritas.
 
 ## Tecnologias utilizadas
 
@@ -22,24 +29,14 @@ O programa permite:
 - Requests
 - SQLite
 - Open-Meteo API
-- Git e GitHub
-
-## Estrutura do projeto
-
-```text
-clima-app/
-├── main.py
-├── clima.py
-├── lugar.py
-├── banco.py
-├── requirements.txt
-├── .gitignore
-└── README.md
-```
+- Git
+- GitHub
 
 ## Como o projeto funciona
 
-O programa usa duas APIs da Open-Meteo:
+O programa utiliza a API de geocodificação da Open-Meteo para transformar o nome de uma cidade em coordenadas geográficas.
+
+Depois, essas coordenadas são utilizadas pela API de previsão do tempo.
 
 ```text
 Nome da cidade
@@ -50,35 +47,96 @@ Latitude e longitude
         ↓
 API de previsão do tempo
         ↓
-Clima de hoje e amanhã
+Previsão de hoje e amanhã
+        ↓
+Recomendações para sair
 ```
 
-As cidades favoritas são armazenadas localmente em um banco SQLite.
+As cidades favoritas são armazenadas localmente em um banco de dados SQLite.
+
+## Modo Recomendacao ao sair?”
+
+O modo “Recomendacao ao sair” analisa os dados da previsão e exibe recomendações para o usuário.
+
+O programa considera informações como:
+
+- temperatura máxima;
+- temperatura mínima;
+- chance de chuva;
+- índice UV;
+- velocidade do vento;
+- código da condição climática.
+
+Exemplos de recomendações:
+
+```text
+Leve um guarda-chuva.
+Está quente. Leve água.
+Use protetor solar.
+Considere levar um casaco.
+O clima parece tranquilo para sair.
+```
+
+Essas recomendações são baseadas nos dados retornados pela API e servem apenas como orientação.
+
+## Estrutura do projeto
+
+```text
+consultar-tempo/
+├── main.py
+├── clima.py
+├── lugar.py
+├── banco.py
+├── requirements.txt
+├── .gitignore
+└── README.md
+```
+
+### `main.py`
+
+Responsável pelo menu principal e pelo fluxo da aplicação.
+
+### `clima.py`
+
+Responsável por consultar a previsão do tempo e gerar descrições e recomendações climáticas.
+
+### `lugar.py`
+
+Responsável por buscar cidades e obter suas coordenadas geográficas.
+
+### `banco.py`
+
+Responsável pelas operações no banco SQLite, como:
+
+- criar a tabela;
+- salvar cidades;
+- listar cidades;
+- remover cidades.
 
 ## Requisitos
 
-- Python 3.10 ou superior
-- `pip`
-- Acesso à internet
+- Python 3.10 ou superior;
+- `pip`;
+- acesso à internet.
 
 ## Como executar
 
 Clone o repositório:
 
 ```bash
-git clone https://github.com/Pablo-hsr/consultar-tempo
+git clone [https://github.com/Pablo-hsr/consultar-tempo](https://github.com/Pablo-hsr/consultar-tempo)
 ```
 
 Entre na pasta:
 
 ```bash
-cd clima-app
+cd consultar-tempo
 ```
 
 Crie um ambiente virtual:
 
 ```bash
-python -m venv .venv
+python3 -m venv .venv
 ```
 
 Ative o ambiente virtual no Linux ou macOS:
@@ -96,7 +154,7 @@ No Windows PowerShell:
 Instale as dependências:
 
 ```bash
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 Execute o programa:
@@ -112,6 +170,7 @@ python main.py
 2 - Listar cidades favoritas
 3 - Ver previsão
 4 - Remover cidade
+5 - Recomendacao ao sair
 0 - Sair
 ```
 
@@ -139,10 +198,16 @@ O arquivo `requirements.txt` contém as bibliotecas necessárias:
 requests
 ```
 
-Para instalar:
+Para instalar manualmente:
 
 ```bash
-pip install -r requirements.txt
+python -m pip install requests
+```
+
+Ou para instalar todas as dependências do projeto:
+
+```bash
+python -m pip install -r requirements.txt
 ```
 
 ## Objetivos de estudo
@@ -157,29 +222,43 @@ Este projeto está sendo desenvolvido para praticar:
 - organização de código em módulos;
 - tratamento de erros;
 - uso do SQLite;
-- operações `INSERT` e `SELECT`;
+- operações `INSERT`, `SELECT` e `DELETE`;
 - criação de menus no terminal;
 - uso de ambientes virtuais;
-- versionamento com Git e GitHub.
+- versionamento com Git e GitHub;
+- separação de responsabilidades;
+- criação de regras de negócio;
+- interpretação de dados retornados por APIs.
 
 ## Possíveis melhorias
 
 Algumas ideias para continuar o desenvolvimento:
 
-- permitir remover cidades favoritas;
 - impedir cidades duplicadas;
 - consultar várias cidades de uma vez;
 - mostrar previsão para mais dias;
 - adicionar previsão por hora;
-- criar alertas de chuva;
-- mostrar umidade e velocidade do vento;
+- melhorar as descrições das condições climáticas;
+- adicionar alertas de chuva;
+- mostrar qualidade do ar;
 - salvar histórico de consultas;
-- adicionar qualidade do ar;
+- permitir editar cidades favoritas;
+- criar testes automatizados;
 - criar uma interface gráfica;
 - transformar o projeto em uma aplicação web.
 
+## Limitações atuais
+
+- A previsão depende da disponibilidade das APIs externas.
+- O programa funciona apenas pelo terminal.
+- As recomendações do modo “Recomendacao ao sair?” são baseadas em regras simples.
+- As cidades favoritas são armazenadas apenas localmente.
+- O projeto ainda não possui autenticação de usuários.
+
 ## Observação
 
-A Open-Meteo é utilizada neste projeto como fonte de dados meteorológicos. Consulte a [documentação oficial da Open-Meteo](https://open-meteo.com/en/docs) para conhecer os parâmetros disponíveis.
+A Open-Meteo é utilizada neste projeto como fonte de dados meteorológicos.
+
+Consulte a [documentação oficial da Open-Meteo](https://open-meteo.com/en/docs) para conhecer os endpoints e parâmetros disponíveis.
 
 Este projeto foi criado por Pablo Henrique como parte dos meus estudos de programação e desenvolvimento de software.
