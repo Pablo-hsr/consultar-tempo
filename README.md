@@ -260,5 +260,3 @@ Algumas ideias para continuar o desenvolvimento:
 A Open-Meteo é utilizada neste projeto como fonte de dados meteorológicos.
 
 Consulte a [documentação oficial da Open-Meteo](https://open-meteo.com/en/docs) para conhecer os endpoints e parâmetros disponíveis.
-
-Este projeto foi criado por Pablo Henrique como parte dos meus estudos de programação e desenvolvimento de software.
